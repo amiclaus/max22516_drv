@@ -53,70 +53,175 @@
 /******************************************************************************/
 /********************** Macros and Constants Definitions **********************/
 /******************************************************************************/
-#define REG_CHIP_ID		0x00
-#define REG_REV_ID		0x01
-#define REG_IOL_STAT		0x02
-#define REG_DEV_STAT1		0x03
-#define REG_DEV_STAT2		0x04
-#define REG_ISDU_STAT		0x05
-#define REG_IOL_ERR_CNT		0x06
-#define REG_FRM_ERR_CNT		0x07
-#define REG_IOL_INT		0x08
-#define REG_DEV_INT		0x09
-#define REG_ISDU_INT		0x0A
-#define REG_IOL_INT_EN		0x0E
-#define REG_DEV_INT_EN		0x0F
-#define REG_ISDU_INT_EN		0x10
-#define REG_IOL_CFG		0x14
-#define REG_Watchdog		0x15
-#define REG_WDGclr		0x16
-#define REG_MISC_CFG		0x17
-#define REG_CLK_CFG		0x18
-#define REG_CLK_TRIM		0x19
-#define REG_PG1_MstCmd		0x1A
-#define REG_PG1_MstCycTm	0x1B
-#define REG_PG1_MinCycTm	0x1C
-#define REG_PG1_MseqCap		0x1D
-#define REG_PG1_RevID		0x1E
-#define REG_PG1_PDIN		0x1F
-#define REG_PG1_PDOUT		0x20
-#define REG_PG1_VID1		0x21
-#define REG_PG1_VID2		0x22
-#define REG_PG1_DevID1		0x23
-#define REG_PG1_DevID2		0x24
-#define REG_PG1_DevID3		0x25
-#define REG_PG1_FuncID1		0x26
-#define REG_PG1_FuncID2		0x27
-#define REG_PG1_res1		0x28
-#define REG_PG1_res2		0x29
-#define REG_WDG_EVENT		0x2A
-#define REG_STATUS_CODE_Def	0x2B
-#define REG_STATUS_CODE		0x2C
-#define REG_EVENT_Qual		0x2D
-#define REG_EVENT_Code_MSB	0x2E
-#define REG_EVENT_Code_LSB	0x2F
-#define REG_EVENT_Flag		0x30
-#define REG_PDIN_FIFO		0x35
-#define REG_PDIN_Data_Rdy	0x36
-#define REG_PDOUT_FIFO		0x37
-#define REG_ISDU_Offset		0x3F
-#define REG_ISDU_InFifo		0x40
-#define REG_ISDU_DataRdy	0x41
-#define REG_ISDU_OutFifo	0x42
-#define REG_ISDU_Level		0x43
-#define REG_LED1_Ctrl_MSB	0x50
-#define REG_LED1_Ctrl_LSB	0x51
-#define REG_LED2_Ctrl_MSB	0x52
-#define REG_LED2_Ctrl_LSB	0x53
-#define REG_GPIO1_Ctrl		0x54
-#define REG_GPIO2_Ctrl		0x55
-#define REG_CQ_Ctrl1		0x56
-#define REG_CQ_Ctrl2		0x57
-#define REG_DO_Ctrl1		0x58
-#define REG_DO_Ctrl2		0x59
-#define REG_TX_Ctrl		0x5a
-#define REG_RX_Ctrl		0x5b
-#define REG_MISC_Ctrl		0x5c
+#define REG_CHIP_ID		0X00
+#define REG_REV_ID		0X01
+#define REG_IOL_STAT		0X02
+#define REG_DEV_STAT1		0X03
+#define REG_DEV_STAT2		0X04
+#define REG_ISDU_STAT		0X05
+#define REG_IOL_ERR_CNT		0X06
+#define REG_FRM_ERR_CNT		0X07
+#define REG_IOL_INT		0X08
+#define REG_DEV_INT		0X09
+#define REG_ISDU_INT		0X0A
+#define REG_IOL_INT_EN		0X0E
+#define REG_DEV_INT_EN		0X0F
+#define REG_ISDU_INT_EN		0X10
+#define REG_IOL_CFG		0X14
+#define REG_WATCHDOG		0X15
+#define REG_WDGCLR		0X16
+#define REG_MISC_CFG		0X17
+#define REG_CLK_CFG		0X18
+#define REG_CLK_TRIM		0X19
+#define REG_PG1_MSTCMD		0X1A
+#define REG_PG1_MSTCYCTM	0X1B
+#define REG_PG1_MINCYCTM	0X1C
+#define REG_PG1_MSEQCAP		0X1D
+#define REG_PG1_REVID		0X1E
+#define REG_PG1_PDIN		0X1F
+#define REG_PG1_PDOUT		0X20
+#define REG_PG1_VID1		0X21
+#define REG_PG1_VID2		0X22
+#define REG_PG1_DEVID1		0X23
+#define REG_PG1_DEVID2		0X24
+#define REG_PG1_DEVID3		0X25
+#define REG_PG1_FUNCID1		0X26
+#define REG_PG1_FUNCID2		0X27
+#define REG_PG1_RES1		0X28
+#define REG_PG1_RES2		0X29
+#define REG_WDG_EVENT		0X2A
+#define REG_STATUS_CODE_DEF	0X2B
+#define REG_STATUS_CODE		0X2C
+#define REG_EVENT_QUAL		0X2D
+#define REG_EVENT_CODE_MSB	0X2E
+#define REG_EVENT_CODE_LSB	0X2F
+#define REG_EVENT_FLAG		0X30
+#define REG_PDIN_FIFO		0X35
+#define REG_PDIN_DATA_RDY	0X36
+#define REG_PDOUT_FIFO		0X37
+#define REG_ISDU_OFFSET		0X3F
+#define REG_ISDU_INFIFO		0X40
+#define REG_ISDU_DATARDY	0X41
+#define REG_ISDU_OUTFIFO	0X42
+#define REG_ISDU_LEVEL		0X43
+#define REG_LED1_CTRL_MSB	0X50
+#define REG_LED1_CTRL_LSB	0X51
+#define REG_LED2_CTRL_MSB	0X52
+#define REG_LED2_CTRL_LSB	0X53
+#define REG_GPIO1_CTRL		0X54
+#define REG_GPIO2_CTRL		0X55
+#define REG_CQ_CTRL1		0X56
+#define REG_CQ_CTRL2		0X57
+#define REG_DO_CTRL1		0X58
+#define REG_DO_CTRL2		0X59
+#define REG_TX_CTRL		0X5A
+#define REG_RX_CTRL		0X5B
+#define REG_MISC_CTRL		0X5C
+
+/* REG_DEV_STAT2 */
+#define DEV_STAT2_SET_DOFAULT       0x20
+#define DEV_STAT2_SET_CQFAULT       0x10
+#define DEV_STAT2_SET_V24ERR        0x08
+#define DEV_STAT2_SET_VMErr         0x04
+#define DEV_STAT2_SET_THWARN        0x02
+#define DEV_STAT2_SET_TSHD          0x01
+
+/* REG_CQ_CTRL1 */
+#define BIT_CQCTRL1_CQ_SLEW0	0x00
+#define BIT_CQCTRL1_CQ_SLEW1	0x40
+#define BIT_CQCTRL1_CQ_SLEW2	0x80
+#define BIT_CQCTRL1_CQ_SLEW3	0xC0
+#define BIT_CQCTRL1_CQ_PD	0x20
+#define BIT_CQCTRL1_CQ_PU	0x10
+#define BIT_CQCTRL1_CQ_NPN	0x08
+#define BIT_CQCTRL1_CQ_PP	0x04
+#define BIT_CQCTRL1_CQ_INV	0x02
+#define BIT_CQCTRL1_CQ_EN	0x01
+
+/* REG_CQ_CTRL2 */
+#define BIT_CQ_CL_50MA			0x00
+#define BIT_CQ_CL_100MA			0x40
+#define BIT_CQ_CL_200MA			0x80
+#define BIT_CQ_CL_250MA			0xC0
+#define BIT_CQ_CLBL_128US		0x00
+#define BIT_CQ_CLBL_500US		0x08
+#define BIT_CQ_CLBL_1000US		0x10
+#define BIT_CQ_CLBL_5000US		0x18
+#define BIT_CQ_AUTORTY_TIME_50MS	0x00
+#define BIT_CQ_AUTORTY_TIME_100MS	0x02
+#define BIT_CQ_AUTORTY_TIME_200MS	0x04
+#define BIT_CQ_AUTORTY_TIME_500MS	0x06
+#define BIT_CQ_AUTORTY			0x01
+
+/* REG_DO_CTRL1 */
+#define BIT_DOCTRL1_DO_SLEW0		0x00
+#define BIT_DOCTRL1_DO_SLEW1		0x40
+#define BIT_DOCTRL1_DO_SLEW2		0x80
+#define BIT_DOCTRL1_DO_SLEW3		0xC0
+#define BIT_DOCTRL1_DO_PD		0x20
+#define BIT_DOCTRL1_DO_PU		0x10
+#define BIT_DOCTRL1_DO_NPN		0x08
+#define BIT_DOCTRL1_DO_PP		0x04
+#define BIT_DOCTRL1_DO_INV		0x02
+#define BIT_DOCTRL1_DO_EN		0x01
+
+/* REG_DO_CTRL2 */
+#define BIT_DO_CL_50MA			0x00
+#define BIT_DO_CL_100MA			0x40
+#define BIT_DO_CL_200MA			0x80
+#define BIT_DO_CL_250MA			0xC0
+#define BIT_DO_CLBL_128US		0x00
+#define BIT_DO_CLBL_500US		0x08
+#define BIT_DO_CLBL_1000US		0x10
+#define BIT_DO_CLBL_5000US		0x18
+#define BIT_DO_AUTORTY_TIME_50MS	0x00
+#define BIT_DO_AUTORTY_TIME_100MS	0x02
+#define BIT_DO_AUTORTY_TIME_200MS	0x04
+#define BIT_DO_AUTORTY_TIME_500MS	0x06
+#define BIT_DO_AUTORTY			0x01
+
+/* REG_TX_CTRL */
+#define BIT_TXC_CQTX			0x80
+#define BIT_TXC_CQTXEN			0x40
+#define BIT_TXC_CQDRVSEL		0x20
+#define BIT_TXC_DOTX			0x10
+#define BIT_TXC_DODRVSEL		0x08
+#define BIT_TXC_CQDOPAR			0x02
+#define BIT_TXC_DO_AV			0x01
+	
+/* REG_DEV_STAT2 */
+#define DEV_STAT2_SET_V24ERR		0x08
+#define DEV_STAT2_SET_VMERR		0x04
+#define DEV_STAT2_SET_THWARN		0x02
+#define DEV_STAT2_SET_TSHD		0x01
+
+/* REG_EVENT_FLAG */
+#define EVF_EVENT_FLG			0x01
+
+/* MAX22516 EVENT CODE Masks */
+#define REG_EVENT_CODE_MSB_MSK		NO_OS_GENMASK(15, 8)
+#define REG_EVENT_CODE_LSB_MSK		NO_OS_GENMASK(7, 0)
+
+/* MAX22516 VID Masks*/
+#define PG1_VID1_MSK			NO_OS_GENMASK(15, 8)
+#define PG1_VID2_MSK			NO_OS_GENMASK(7, 0)
+
+/* MAX22516 DEVID Masks*/
+#define PG1_DEVID1_MSK			NO_OS_GENMASK(23, 16)
+#define PG1_DEVID2_MSK			NO_OS_GENMASK(15, 8)
+#define PG1_DEVID3_MSK			NO_OS_GENMASK(7, 0)
+
+/* MAX22516 FUNCID1 Masks */
+#define PG1_FUNCID1_MSB_MSK		NO_OS_GENMASK(15, 8)
+#define PG1_FUNCID1_LSB_MSK		NO_OS_GENMASK(7, 0)
+
+/* MAX22516 LED1_CTRL Masks */
+#define REG_LED1_CTRL_MSB_MSK		NO_OS_GENMASK(15, 8)
+#define REG_LED1_CTRL_LSB_MSK		NO_OS_GENMASK(7, 0)
+
+/* MAX22516 LED2_CTRL Masks */
+#define REG_LED2_CTRL_MSB_MSK		NO_OS_GENMASK(15, 8)
+#define REG_LED2_CTRL_LSB_MSK		NO_OS_GENMASK(7, 0)
 
 /* MAX22516 Extra Definitions */
 #define MAX22516_SPI_DUMMY_DATA		0x00
@@ -168,6 +273,10 @@ int max22516_burst_write_register(struct max22516_dev *dev, uint8_t reg_addr,
 /* MAX22516 Burst Read */
 int max22516_burst_read_register(struct max22516_dev *dev, uint8_t reg_addr,
 				 uint8_t count, uint8_t *data);
+
+int max22516_build_tcyc(struct max22516_dev *dev, int16_t t, uint8_t *tmr);
+
+int max22516_set_min_ctmr(struct max22516_dev *dev, uint16_t min_t);
 
 /* MAX22516 Initialization */
 int max22516_init(struct max22516_dev **device,
