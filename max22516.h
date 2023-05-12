@@ -274,75 +274,109 @@ int max22516_burst_write_register(struct max22516_dev *dev, uint8_t reg_addr,
 int max22516_burst_read_register(struct max22516_dev *dev, uint8_t reg_addr,
 				 uint8_t count, uint8_t *data);
 
+/* MAX22516 build tcyc */
 void max22516_build_tcyc(int16_t t, uint8_t *tmr);
 
+/* MAX22516 rebuild min cyct to microseconds */
 void max22516_rebuild_min_cyct_to_us(int16_t t, uint8_t *tmr);
 
+/* MAX22516 set min ctmr */
 int max22516_set_min_ctmr(struct max22516_dev *dev, uint16_t min_t);
 
+/* MAX22516 set id */
 int max22516_set_id(struct max22516_dev *dev, uint16_t vid, uint32_t id,
 		    uint16_t fid);
 
+/* MAX22516 decode tcyc */
 void max22516_decode_tcyc(uint8_t tmr, int16_t *t);
 
+/* MAX22516 get mst ctmr */
 int max22516_get_mst_ctmr(struct max22516_dev *dev, uint16_t min_t,
 			  int16_t *c_tmr);
 
+/* MAX22516 get dl mode */
 int max22516_get_dl_mode(struct max22516_dev *dev, uint8_t *mode);
 
+/* MAX22516 get iol err cnt */
 int max22516_get_iol_err_cnt(struct max22516_dev *dev, uint8_t *cnt);
 
+/* MAX22516 get frm err cnt */
 int max22516_get_frm_err_cnt(struct max22516_dev *dev, uint8_t *cnt);
 
+/* MAX22516 clr iol err cnt */
 int max22516_clr_iol_err_cnt(struct max22516_dev *dev);
 
+/* MAX22516 clr frm err cnt */
 int max22516_clr_frm_err_cnt(struct max22516_dev *dev);
 
+/* MAX22516 set led1 */
 int max22516_set_led1(struct max22516_dev *dev, uint16_t ltmr);
 
+/* MAX22516 set led2 */
 int max22516_set_led2(struct max22516_dev *dev, uint16_t ltmr);
 
+/* MAX22516 get v24 */
 int max22516_get_v24(struct max22516_dev *dev, uint8_t *status3);
 
+/* MAX22516 get THD */
 int max22516_get_thd(struct max22516_dev *dev, uint8_t *status3);
 
+/* MAX22516 setup cq dis */
 int max22516_setup_cq_dis(struct max22516_dev *dev);
 
+/* MAX22516 setup cq pp */
 int max22516_setup_cq_pp(struct max22516_dev *dev);
 
+/* MAX22516 setup cq pnp */
 int max22516_setup_cq_pnp(struct max22516_dev *dev);
 
+/* MAX22516 setup cq npn */
 int max22516_setup_cq_npn(struct max22516_dev *dev);
 
+/* MAX22516 tx set */
 int max22516_tx_set(struct max22516_dev *dev, uint8_t low_high);
 
+/* MAX22516 txen set */
 int max22516_txen_set(struct max22516_dev *dev, uint8_t lvl);
 
+/* MAX22516 set cq */
 int max22516_set_cq(struct max22516_dev *dev, uint8_t lvl);
 
+/* MAX22516 rx get */
 int max22516_rx_get(struct max22516_dev *dev);
 
+/* MAX22516 get cq */
 int max22516_get_cq(struct max22516_dev *dev, uint8_t *cq);
 
+/* MAX22516 get cq stat */
 int max22516_get_cq_stat(struct max22516_dev *dev, uint8_t *status3);
 
+/* MAX22516 get cq */
 int max22516_setup_do_dis(struct max22516_dev *dev);
 
+/* MAX22516 setup do pp */
 int max22516_setup_do_pp(struct max22516_dev *dev);
 
+/* MAX22516 setup do pnp */
 int max22516_setup_do_pnp(struct max22516_dev *dev);
 
+/* MAX22516 setup do npn */
 int max22516_setup_do_npn(struct max22516_dev *dev);
 
+/* MAX22516 do set */
 int max22516_do_set(struct max22516_dev *dev, uint8_t lvl);
 
+/* MAX22516 do get */
 int max22516_do_get(struct max22516_dev *dev, uint8_t *lvl);
 
+/* MAX22516 get do stat */
 int max22516_get_do_stat(struct max22516_dev *dev, uint8_t *status3);
 
+/* MAX22516 set event */
 int max22516_set_event(struct max22516_dev *dev, uint8_t ev_qual,
 		       uint16_t ev_code);
 
+/* MAX22516 setup watchdog */
 int max22516_setup_watchdog(struct max22516_dev *dev, uint8_t wd_timeout,
 			    uint8_t wd_clr, uint8_t wd_event_en,
 			    uint8_t wd_event_flag);
