@@ -136,7 +136,7 @@
 #define BIT_CQCTRL1_CQ_NPN		0x08
 #define BIT_CQCTRL1_CQ_PP		0x04
 #define BIT_CQCTRL1_CQ_INV		0x02
-#define BIT_CQCTRL1_CQ_EN	0x01
+#define BIT_CQCTRL1_CQ_EN		0x01
 
 /* REG_CQ_CTRL2 */
 #define BIT_CQ_CL_50MA			0x00
