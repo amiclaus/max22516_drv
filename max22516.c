@@ -57,15 +57,15 @@
  * @param data - Data value to write.
  * @return Returns 0 in case of success or negative error code otherwise.
  */
-int max22516_write(struct max22516_dev *dev, uint8_t reg_addr,
-		   uint8_t data)
+int max22516_write(struct max22516_dev *dev, uint8_t reg_addr, uint8_t data)
 {
 	uint8_t buff[MAX22516_BUFF_SIZE_BYTES];
 
 	buff[0] = reg_addr;
 	buff[1] = data;
 
-	return no_os_spi_write_and_read(dev->spi_desc, buff, MAX22516_BUFF_SIZE_BYTES);
+	return no_os_spi_write_and_read(dev->spi_desc, buff,
+					MAX22516_BUFF_SIZE_BYTES);
 }
 
 /**
@@ -75,8 +75,7 @@ int max22516_write(struct max22516_dev *dev, uint8_t reg_addr,
  * @param data - Data read from the device.
  * @return Returns 0 in case of success or negative error code otherwise.
  */
-int max22516_read(struct max22516_dev *dev, uint8_t reg_addr,
-		  uint8_t *data)
+int max22516_read(struct max22516_dev *dev, uint8_t reg_addr, uint8_t *data)
 {
 	int ret;
 	uint8_t buff[MAX22516_BUFF_SIZE_BYTES];
@@ -84,7 +83,8 @@ int max22516_read(struct max22516_dev *dev, uint8_t reg_addr,
 	buff[0] = MAX22516_SPI_READ_CMD | reg_addr;
 	buff[1] = MAX22516_SPI_DUMMY_DATA;
 
-	ret = no_os_spi_write_and_read(dev->spi_desc, buff, MAX22516_BUFF_SIZE_BYTES);
+	ret = no_os_spi_write_and_read(dev->spi_desc, buff,
+				       MAX22516_BUFF_SIZE_BYTES);
 	if (ret)
 		return ret;
 
@@ -101,8 +101,8 @@ int max22516_read(struct max22516_dev *dev, uint8_t reg_addr,
  * @param data - Data read from the device.
  * @return Returns 0 in case of success or negative error code otherwise.
  */
-int max22516_update(struct max22516_dev *dev, uint8_t reg_addr,
-		    uint8_t mask, uint8_t data)
+int max22516_update(struct max22516_dev *dev, uint8_t reg_addr, uint8_t mask,
+		    uint8_t data)
 {
 	uint8_t read_val;
 	int ret;
@@ -169,17 +169,12 @@ void max22516_build_tcyc(int16_t t, uint8_t *tmr)
 {
 	uint8_t temp = 0;
 
-	if (t <= 64) // in 100µs. -> if less than 6.4ms
-	{
+	if (t <= 64) { // in 100µs. -> if less than 6.4ms
 		temp = t;
-	}
-	else if (t <= 316) // in 100µs. -> if less than 31.6ms
-	{
+	} else if (t <= 316) { // in 100µs. -> if less than 31.6ms
 		temp = (t-64) / 4; // offset of 6.4ms and now in 400µs steps
 		temp |= 0x40;
-	}
-	else if (t < 1328) // in 100µs. -> if less than 132.8ms
-	{
+	} else if (t < 1328) { // in 100µs. -> if less than 132.8ms
 		temp = (t-320) / 16; // offset of 32ms and now in 1.6ms steps
 		temp |= 0x80;
 	}
@@ -187,9 +182,24 @@ void max22516_build_tcyc(int16_t t, uint8_t *tmr)
 	*tmr = temp;
 }
 
-int max22516_set_min_ctmr(struct max22516_dev *dev, uint16_t min_t) //set min cyc time, in 100us
+void max22516_rebuild_min_cyct_to_us(int16_t t, uint8_t *tmr)
 {
-	int ret;
+	uint8_t temp = 0;
+
+	if ((t & 0xc0) == 0x00) {      // then time is stored in 100µs increments
+		temp = t * 100;
+	} else if ((t & 0xc0) == 0x40) { // then time is stored in 400µs increments
+		temp = 6400 + ((t&0x3f) * 400);
+	} else if ((t & 0xc0) == 0x80) { // then time is stored in 1.6ms increments
+		temp = 32000 + ((t&0x3f) * 1600);
+	}
+
+	*tmr = temp;
+}
+
+int max22516_set_min_ctmr(struct max22516_dev *dev,
+			  uint16_t min_t) //set min cyc time, in 100us
+{
 	uint8_t tmr;
 
 	max22516_build_tcyc(min_t, &tmr);
@@ -198,42 +208,42 @@ int max22516_set_min_ctmr(struct max22516_dev *dev, uint16_t min_t) //set min cy
 }
 
 int max22516_set_id(struct max22516_dev *dev, uint16_t vid, uint32_t id,
-			uint16_t fid)
+		    uint16_t fid)
 {
 	int ret;
 
 	ret = max22516_write(dev, REG_PG1_VID1,
-		no_os_field_prep(PG1_VID1_MSK, vid));
+			     no_os_field_prep(PG1_VID1_MSK, vid));
 	if (ret)
 		return ret;
 
 	ret = max22516_write(dev, REG_PG1_VID2,
-		no_os_field_prep(PG1_VID2_MSK, vid));
+			     no_os_field_prep(PG1_VID2_MSK, vid));
 	if (ret)
 		return ret;
 
 	ret = max22516_write(dev, REG_PG1_DEVID1,
-		no_os_field_prep(PG1_DEVID1_MSK, id));
+			     no_os_field_prep(PG1_DEVID1_MSK, id));
 	if (ret)
 		return ret;
 
 	ret = max22516_write(dev, REG_PG1_DEVID2,
-		no_os_field_prep(PG1_DEVID2_MSK, id));
+			     no_os_field_prep(PG1_DEVID2_MSK, id));
 	if (ret)
 		return ret;
 
 	ret = max22516_write(dev, REG_PG1_DEVID3,
-		no_os_field_prep(PG1_DEVID3_MSK, id));
+			     no_os_field_prep(PG1_DEVID3_MSK, id));
 	if (ret)
 		return ret;
 
-	ret = max22516_write_register(dev, REG_PG1_FUNCID1,
-		no_os_field_prep(PG1_FUNCID1_MSB_MSK, fid));
+	ret = max22516_write(dev, REG_PG1_FUNCID1,
+			     no_os_field_prep(PG1_FUNCID1_MSB_MSK, fid));
 	if (ret)
 		return ret;
 
-	return max22516_write_register(dev, REG_PG1_FUNCID1,
-		no_os_field_prep(PG1_FUNCID1_LSB_MSK, fid));
+	return max22516_write(dev, REG_PG1_FUNCID1,
+			      no_os_field_prep(PG1_FUNCID1_LSB_MSK, fid));
 }
 
 void max22516_decode_tcyc(uint8_t tmr, int16_t *t)
@@ -241,19 +251,18 @@ void max22516_decode_tcyc(uint8_t tmr, int16_t *t)
 	uint8_t base = (tmr >> 6);
 	int16_t temp = (tmr & 0x3F);
 
-	if (base == 0)
-	else if (base == 1) 
+	if (base == 1)
 		temp <<= 2;
 	else if (base == 2)
 		temp <<= 4;
 	else
 		temp = (0x3F << 4);
-	
+
 	*t = temp;
 }
 
 int max22516_get_mst_ctmr(struct max22516_dev *dev, uint16_t min_t,
-			int16_t *c_tmr)  //get master min cyc time, in 100us
+			  int16_t *c_tmr)  //get master min cyc time, in 100us
 {
 	int ret;
 	uint8_t tmr;
@@ -297,12 +306,12 @@ int max22516_set_led1(struct max22516_dev *dev, uint16_t ltmr)
 	int ret;
 
 	ret = max22516_write(dev, REG_LED1_CTRL_MSB,
-	no_os_field_prep(REG_LED1_CTRL_MSB_MSK, ltmr));
+			     no_os_field_prep(REG_LED1_CTRL_MSB_MSK, ltmr));
 	if (ret)
 		return ret;
 
 	return max22516_write(dev, REG_LED1_CTRL_LSB,
-	no_os_field_prep(REG_LED1_CTRL_LSB_MSK, ltmr));
+			      no_os_field_prep(REG_LED1_CTRL_LSB_MSK, ltmr));
 }
 
 int max22516_set_led2(struct max22516_dev *dev, uint16_t ltmr)
@@ -310,12 +319,12 @@ int max22516_set_led2(struct max22516_dev *dev, uint16_t ltmr)
 	int ret;
 
 	ret = max22516_write(dev, REG_LED2_CTRL_MSB,
-	no_os_field_prep(REG_LED2_CTRL_MSB_MSK, ltmr));
+			     no_os_field_prep(REG_LED2_CTRL_MSB_MSK, ltmr));
 	if (ret)
 		return ret;
 
 	return max22516_write(dev, REG_LED2_CTRL_LSB,
-	no_os_field_prep(REG_LED2_CTRL_LSB_MSK, ltmr));
+			      no_os_field_prep(REG_LED2_CTRL_LSB_MSK, ltmr));
 }
 
 int max22516_get_v24(struct max22516_dev *dev, uint8_t *status3)
@@ -365,14 +374,14 @@ int max22516_setup_cq_pp(struct max22516_dev *dev)
 {
 	int ret;
 	ret = max22516_write(dev, REG_CQ_CTRL1, BIT_CQCTRL1_CQ_EN |
-	BIT_CQCTRL1_CQ_PP);
+			     BIT_CQCTRL1_CQ_PP);
 	if (ret)
 		return ret;
 
 	return max22516_write(dev, REG_CQ_CTRL2, BIT_CQ_AUTORTY |
-			BIT_CQ_AUTORTY_TIME_200MS |
-			BIT_CQ_CLBL_500US |
-			BIT_CQ_CL_200MA);
+			      BIT_CQ_AUTORTY_TIME_200MS |
+			      BIT_CQ_CLBL_500US |
+			      BIT_CQ_CL_200MA);
 }
 
 int max22516_setup_cq_pnp(struct max22516_dev *dev)
@@ -383,9 +392,9 @@ int max22516_setup_cq_pnp(struct max22516_dev *dev)
 		return ret;
 
 	return max22516_write(dev, REG_CQ_CTRL2, BIT_CQ_AUTORTY |
-			BIT_CQ_AUTORTY_TIME_200MS |
-			BIT_CQ_CLBL_500US |
-			BIT_CQ_CL_200MA);
+			      BIT_CQ_AUTORTY_TIME_200MS |
+			      BIT_CQ_CLBL_500US |
+			      BIT_CQ_CL_200MA);
 }
 
 int max22516_setup_cq_npn(struct max22516_dev *dev)
@@ -396,16 +405,16 @@ int max22516_setup_cq_npn(struct max22516_dev *dev)
 		return ret;
 
 	return max22516_write(dev, REG_CQ_CTRL2, BIT_CQ_AUTORTY |
-			BIT_CQ_AUTORTY_TIME_200MS |
-			BIT_CQ_CLBL_500US |
-			BIT_CQ_CL_200MA);
+			      BIT_CQ_AUTORTY_TIME_200MS |
+			      BIT_CQ_CLBL_500US |
+			      BIT_CQ_CL_200MA);
 }
 
 int max22516_tx_set(struct max22516_dev *dev, uint8_t low_high)
 {
 	uint8_t tx_ctrl;
 	int ret;
-	
+
 	ret = max22516_read(dev, REG_TX_CTRL, &tx_ctrl);
 	if (ret)
 		return ret;
@@ -416,7 +425,8 @@ int max22516_tx_set(struct max22516_dev *dev, uint8_t low_high)
 		tx_ctrl |= BIT_TXC_CQTX; // set TX to high, keep other bits
 
 
-	tx_ctrl |= BIT_TXC_CQDRVSEL;  // Make sure the register-bits are used (rather then pins)
+	tx_ctrl |=
+		BIT_TXC_CQDRVSEL;  // Make sure the register-bits are used (rather then pins)
 
 	return max22516_write(dev, REG_TX_CTRL, tx_ctrl);
 }
@@ -436,12 +446,14 @@ int max22516_txen_set(struct max22516_dev *dev, uint8_t lvl)
 		tx_ctrl |= BIT_TXC_CQTXEN; // set TXEN to high, keep other bits
 
 
-	tx_ctrl |= BIT_TXC_CQDRVSEL;  // Make sure the register-bits are used (rather then pins)
+	tx_ctrl |=
+		BIT_TXC_CQDRVSEL;  // Make sure the register-bits are used (rather then pins)
 
 	return max22516_write(dev, REG_TX_CTRL, tx_ctrl);
 }
 
-int max22516_set_cq(struct max22516_dev *dev, uint8_t lvl) // set the level of CQ (0: CQ low, 1: CQ high, 2: CQ highZ)
+int max22516_set_cq(struct max22516_dev *dev,
+		    uint8_t lvl) // set the level of CQ (0: CQ low, 1: CQ high, 2: CQ highZ)
 {
 	int ret;
 
@@ -493,22 +505,22 @@ int max22516_get_cq_stat(struct max22516_dev *dev, uint8_t *status3)
 
 int max22516_setup_do_dis(struct max22516_dev *dev)
 {
-	return max22516_write(dev, REG_DO_CTRL1, BIT_CQCTRL1_DO_PD);
+	return max22516_write(dev, REG_DO_CTRL1, BIT_DOCTRL1_DO_PD);
 }
 
 int max22516_setup_do_pp(struct max22516_dev *dev)
 {
 	int ret;
 
-	ret = max22516_write(dev, REG_DO_CTRL1, BIT_CQCTRL1_DO_EN |
-	BIT_CQCTRL1_CQ_PP);
+	ret = max22516_write(dev, REG_DO_CTRL1, BIT_DOCTRL1_DO_EN |
+			     BIT_DOCTRL1_DO_PP);
 	if (ret)
 		return ret;
 
 	return max22516_write(dev, REG_DO_CTRL2, BIT_DO_AUTORTY |
-			BIT_DO_AUTORTY_TIME_200MS |
-			BIT_DO_CLBL_500US |
-			BIT_DO_CL_200MA);
+			      BIT_DO_AUTORTY_TIME_200MS |
+			      BIT_DO_CLBL_500US |
+			      BIT_DO_CL_200MA);
 }
 
 int max22516_setup_do_pnp(struct max22516_dev *dev)
@@ -520,30 +532,31 @@ int max22516_setup_do_pnp(struct max22516_dev *dev)
 		return ret;
 
 	return max22516_write(dev, REG_DO_CTRL2, BIT_DO_AUTORTY |
-			BIT_DO_AUTORTY_TIME_200MS |
-			BIT_DO_CLBL_500US |
-			BIT_DO_CL_200MA);
+			      BIT_DO_AUTORTY_TIME_200MS |
+			      BIT_DO_CLBL_500US |
+			      BIT_DO_CL_200MA);
 }
 
 int max22516_setup_do_npn(struct max22516_dev *dev)
 {
 	int ret;
 
-	ret = max22516_write(dev, REG_DO_CTRL1, BIT_DOCTRL1_DO_EN);
+	ret = max22516_write(dev, REG_DO_CTRL1, BIT_DOCTRL1_DO_EN |
+			     BIT_DOCTRL1_DO_NPN);
 	if (ret)
 		return ret;
 
 	return max22516_write(dev, REG_DO_CTRL2, BIT_DO_AUTORTY |
-			BIT_DO_AUTORTY_TIME_200MS |
-			BIT_DO_CLBL_500US |
-			BIT_DO_CL_200MA);
+			      BIT_DO_AUTORTY_TIME_200MS |
+			      BIT_DO_CLBL_500US |
+			      BIT_DO_CL_200MA);
 }
 
 int max22516_do_set(struct max22516_dev *dev, uint8_t lvl)
 {
 	uint8_t tx_ctrl;
 	int ret;
-	
+
 	ret = max22516_read(dev, REG_TX_CTRL, &tx_ctrl);
 	if (ret)
 		return ret;
@@ -556,7 +569,7 @@ int max22516_do_set(struct max22516_dev *dev, uint8_t lvl)
 	return max22516_write(dev, REG_TX_CTRL, tx_ctrl);
 }
 
-int max22516_do_get(struct max22516_dev *dev, uint8_t *do)
+int max22516_do_get(struct max22516_dev *dev, uint8_t *lvl)
 {
 	return 1;
 }
@@ -579,7 +592,7 @@ int max22516_get_do_stat(struct max22516_dev *dev, uint8_t *status3)
 }
 
 int max22516_set_event(struct max22516_dev *dev, uint8_t ev_qual,
-	uint16_t ev_code)
+		       uint16_t ev_code)
 {
 	int ret;
 
@@ -592,16 +605,54 @@ int max22516_set_event(struct max22516_dev *dev, uint8_t ev_qual,
 		return ret;
 
 	ret = max22516_write(dev, REG_EVENT_CODE_MSB,
-		no_os_field_prep(REG_EVENT_CODE_MSB_MSK, ev_code));
+			     no_os_field_prep(REG_EVENT_CODE_MSB_MSK, ev_code));
 	if (ret)
 		return ret;
 
-	ret = max22516_write(dev, REG_EVENT_CODE_LSB, 
-	no_os_field_prep(REG_EVENT_CODE_LSB_MSK, ev_code));
+	ret = max22516_write(dev, REG_EVENT_CODE_LSB,
+			     no_os_field_prep(REG_EVENT_CODE_LSB_MSK, ev_code));
 	if (ret)
 		return ret;
 
-	return max22516_write(REG_EVENT_FLAG, EVF_EVENT_FLG);
+	return max22516_write(dev, REG_EVENT_FLAG, EVF_EVENT_FLG);
+}
+
+int max22516_setup_watchdog(struct max22516_dev *dev, uint8_t wd_timeout,
+			    uint8_t wd_clr, uint8_t wd_event_en,
+			    uint8_t wd_event_flag)
+{
+	int ret;
+	uint8_t event_flag;
+
+	if (wd_clr == 0)
+		ret = max22516_write(dev, REG_WDGCLR, wd_clr);
+	if (wd_clr == 1)
+		ret = max22516_write(dev, REG_WDGCLR, wd_clr);
+
+	if (ret)
+		return ret;
+
+	ret = max22516_read(dev, REG_EVENT_FLAG, &event_flag);
+	if (ret)
+		return ret;
+
+	if (wd_event_en == 1) {
+		ret = max22516_write(dev, REG_EVENT_FLAG, event_flag | 0x02);
+		if (ret)
+			return ret;
+
+		return max22516_write(dev, REG_WDG_EVENT, wd_event_flag);
+	}
+
+	if (wd_event_en == 0) {
+		ret = max22516_write(dev, REG_EVENT_FLAG, event_flag & 0xfd);
+		if (ret)
+			return ret;
+
+		return max22516_write(dev, REG_WDG_EVENT, wd_event_flag);
+	}
+
+	return 0;
 }
 
 /**
