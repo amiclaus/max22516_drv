@@ -53,89 +53,89 @@
 /******************************************************************************/
 /********************** Macros and Constants Definitions **********************/
 /******************************************************************************/
-#define REG_CHIP_ID		0X00
-#define REG_REV_ID		0X01
-#define REG_IOL_STAT		0X02
-#define REG_DEV_STAT1		0X03
-#define REG_DEV_STAT2		0X04
-#define REG_ISDU_STAT		0X05
-#define REG_IOL_ERR_CNT		0X06
-#define REG_FRM_ERR_CNT		0X07
-#define REG_IOL_INT		0X08
-#define REG_DEV_INT		0X09
-#define REG_ISDU_INT		0X0A
-#define REG_IOL_INT_EN		0X0E
-#define REG_DEV_INT_EN		0X0F
-#define REG_ISDU_INT_EN		0X10
-#define REG_IOL_CFG		0X14
-#define REG_WATCHDOG		0X15
-#define REG_WDGCLR		0X16
-#define REG_MISC_CFG		0X17
-#define REG_CLK_CFG		0X18
-#define REG_CLK_TRIM		0X19
-#define REG_PG1_MSTCMD		0X1A
-#define REG_PG1_MSTCYCTM	0X1B
-#define REG_PG1_MINCYCTM	0X1C
-#define REG_PG1_MSEQCAP		0X1D
-#define REG_PG1_REVID		0X1E
-#define REG_PG1_PDIN		0X1F
-#define REG_PG1_PDOUT		0X20
-#define REG_PG1_VID1		0X21
-#define REG_PG1_VID2		0X22
-#define REG_PG1_DEVID1		0X23
-#define REG_PG1_DEVID2		0X24
-#define REG_PG1_DEVID3		0X25
-#define REG_PG1_FUNCID1		0X26
-#define REG_PG1_FUNCID2		0X27
-#define REG_PG1_RES1		0X28
-#define REG_PG1_RES2		0X29
-#define REG_WDG_EVENT		0X2A
-#define REG_STATUS_CODE_DEF	0X2B
-#define REG_STATUS_CODE		0X2C
-#define REG_EVENT_QUAL		0X2D
-#define REG_EVENT_CODE_MSB	0X2E
-#define REG_EVENT_CODE_LSB	0X2F
-#define REG_EVENT_FLAG		0X30
-#define REG_PDIN_FIFO		0X35
-#define REG_PDIN_DATA_RDY	0X36
-#define REG_PDOUT_FIFO		0X37
-#define REG_ISDU_OFFSET		0X3F
-#define REG_ISDU_INFIFO		0X40
-#define REG_ISDU_DATARDY	0X41
-#define REG_ISDU_OUTFIFO	0X42
-#define REG_ISDU_LEVEL		0X43
-#define REG_LED1_CTRL_MSB	0X50
-#define REG_LED1_CTRL_LSB	0X51
-#define REG_LED2_CTRL_MSB	0X52
-#define REG_LED2_CTRL_LSB	0X53
-#define REG_GPIO1_CTRL		0X54
-#define REG_GPIO2_CTRL		0X55
-#define REG_CQ_CTRL1		0X56
-#define REG_CQ_CTRL2		0X57
-#define REG_DO_CTRL1		0X58
-#define REG_DO_CTRL2		0X59
-#define REG_TX_CTRL		0X5A
-#define REG_RX_CTRL		0X5B
-#define REG_MISC_CTRL		0X5C
+#define REG_CHIP_ID			0x00
+#define REG_REV_ID			0x01
+#define REG_IOL_STAT			0x02
+#define REG_DEV_STAT1			0x03
+#define REG_DEV_STAT2			0x04
+#define REG_ISDU_STAT			0x05
+#define REG_IOL_ERR_CNT			0x06
+#define REG_FRM_ERR_CNT			0x07
+#define REG_IOL_INT			0x08
+#define REG_DEV_INT			0x09
+#define REG_ISDU_INT			0x0A
+#define REG_IOL_INT_EN			0x0E
+#define REG_DEV_INT_EN			0x0F
+#define REG_ISDU_INT_EN			0x10
+#define REG_IOL_CFG			0x14
+#define REG_WATCHDOG			0x15
+#define REG_WDGCLR			0x16
+#define REG_MISC_CFG			0x17
+#define REG_CLK_CFG			0x18
+#define REG_CLK_TRIM			0x19
+#define REG_PG1_MSTCMD			0x1A
+#define REG_PG1_MSTCYCTM		0x1B
+#define REG_PG1_MINCYCTM		0x1C
+#define REG_PG1_MSEQCAP			0x1D
+#define REG_PG1_REVID			0x1E
+#define REG_PG1_PDIN			0x1F
+#define REG_PG1_PDOUT			0x20
+#define REG_PG1_VID1			0x21
+#define REG_PG1_VID2			0x22
+#define REG_PG1_DEVID1			0x23
+#define REG_PG1_DEVID2			0x24
+#define REG_PG1_DEVID3			0x25
+#define REG_PG1_FUNCID1			0x26
+#define REG_PG1_FUNCID2			0x27
+#define REG_PG1_RES1			0x28
+#define REG_PG1_RES2			0x29
+#define REG_WDG_EVENT			0x2A
+#define REG_STATUS_CODE_DEF		0x2B
+#define REG_STATUS_CODE			0x2C
+#define REG_EVENT_QUAL			0x2D
+#define REG_EVENT_CODE_MSB		0x2E
+#define REG_EVENT_CODE_LSB		0x2F
+#define REG_EVENT_FLAG			0x30
+#define REG_PDIN_FIFO			0x35
+#define REG_PDIN_DATA_RDY		0x36
+#define REG_PDOUT_FIFO			0x37
+#define REG_ISDU_OFFSET			0x3F
+#define REG_ISDU_INFIFO			0x40
+#define REG_ISDU_DATARDY		0x41
+#define REG_ISDU_OUTFIFO		0x42
+#define REG_ISDU_LEVEL			0x43
+#define REG_LED1_CTRL_MSB		0x50
+#define REG_LED1_CTRL_LSB		0x51
+#define REG_LED2_CTRL_MSB		0x52
+#define REG_LED2_CTRL_LSB		0x53
+#define REG_GPIO1_CTRL			0x54
+#define REG_GPIO2_CTRL			0x55
+#define REG_CQ_CTRL1			0x56
+#define REG_CQ_CTRL2			0x57
+#define REG_DO_CTRL1			0x58
+#define REG_DO_CTRL2			0x59
+#define REG_TX_CTRL			0x5A
+#define REG_RX_CTRL			0x5B
+#define REG_MISC_CTRL			0x5C
 
 /* REG_DEV_STAT2 */
-#define DEV_STAT2_SET_DOFAULT       0x20
-#define DEV_STAT2_SET_CQFAULT       0x10
-#define DEV_STAT2_SET_V24ERR        0x08
-#define DEV_STAT2_SET_VMErr         0x04
-#define DEV_STAT2_SET_THWARN        0x02
-#define DEV_STAT2_SET_TSHD          0x01
+#define DEV_STAT2_SET_DOFAULT		0x20
+#define DEV_STAT2_SET_CQFAULT		0x10
+#define DEV_STAT2_SET_V24ERR		0x08
+#define DEV_STAT2_SET_VMWERR		0x04
+#define DEV_STAT2_SET_THWARN		0x02
+#define DEV_STAT2_SET_TSHD		0x01
 
 /* REG_CQ_CTRL1 */
-#define BIT_CQCTRL1_CQ_SLEW0	0x00
-#define BIT_CQCTRL1_CQ_SLEW1	0x40
-#define BIT_CQCTRL1_CQ_SLEW2	0x80
-#define BIT_CQCTRL1_CQ_SLEW3	0xC0
-#define BIT_CQCTRL1_CQ_PD	0x20
-#define BIT_CQCTRL1_CQ_PU	0x10
-#define BIT_CQCTRL1_CQ_NPN	0x08
-#define BIT_CQCTRL1_CQ_PP	0x04
-#define BIT_CQCTRL1_CQ_INV	0x02
+#define BIT_CQCTRL1_CQ_SLEW0		0x00
+#define BIT_CQCTRL1_CQ_SLEW1		0x40
+#define BIT_CQCTRL1_CQ_SLEW2		0x80
+#define BIT_CQCTRL1_CQ_SLEW3		0xC0
+#define BIT_CQCTRL1_CQ_PD		0x20
+#define BIT_CQCTRL1_CQ_PU		0x10
+#define BIT_CQCTRL1_CQ_NPN		0x08
+#define BIT_CQCTRL1_CQ_PP		0x04
+#define BIT_CQCTRL1_CQ_INV		0x02
 #define BIT_CQCTRL1_CQ_EN	0x01
 
 /* REG_CQ_CTRL2 */
@@ -188,7 +188,7 @@
 #define BIT_TXC_DODRVSEL		0x08
 #define BIT_TXC_CQDOPAR			0x02
 #define BIT_TXC_DO_AV			0x01
-	
+
 /* REG_DEV_STAT2 */
 #define DEV_STAT2_SET_V24ERR		0x08
 #define DEV_STAT2_SET_VMERR		0x04
@@ -274,9 +274,78 @@ int max22516_burst_write_register(struct max22516_dev *dev, uint8_t reg_addr,
 int max22516_burst_read_register(struct max22516_dev *dev, uint8_t reg_addr,
 				 uint8_t count, uint8_t *data);
 
-int max22516_build_tcyc(struct max22516_dev *dev, int16_t t, uint8_t *tmr);
+void max22516_build_tcyc(int16_t t, uint8_t *tmr);
+
+void max22516_rebuild_min_cyct_to_us(int16_t t, uint8_t *tmr);
 
 int max22516_set_min_ctmr(struct max22516_dev *dev, uint16_t min_t);
+
+int max22516_set_id(struct max22516_dev *dev, uint16_t vid, uint32_t id,
+		    uint16_t fid);
+
+void max22516_decode_tcyc(uint8_t tmr, int16_t *t);
+
+int max22516_get_mst_ctmr(struct max22516_dev *dev, uint16_t min_t,
+			  int16_t *c_tmr);
+
+int max22516_get_dl_mode(struct max22516_dev *dev, uint8_t *mode);
+
+int max22516_get_iol_err_cnt(struct max22516_dev *dev, uint8_t *cnt);
+
+int max22516_get_frm_err_cnt(struct max22516_dev *dev, uint8_t *cnt);
+
+int max22516_clr_iol_err_cnt(struct max22516_dev *dev);
+
+int max22516_clr_frm_err_cnt(struct max22516_dev *dev);
+
+int max22516_set_led1(struct max22516_dev *dev, uint16_t ltmr);
+
+int max22516_set_led2(struct max22516_dev *dev, uint16_t ltmr);
+
+int max22516_get_v24(struct max22516_dev *dev, uint8_t *status3);
+
+int max22516_get_thd(struct max22516_dev *dev, uint8_t *status3);
+
+int max22516_setup_cq_dis(struct max22516_dev *dev);
+
+int max22516_setup_cq_pp(struct max22516_dev *dev);
+
+int max22516_setup_cq_pnp(struct max22516_dev *dev);
+
+int max22516_setup_cq_npn(struct max22516_dev *dev);
+
+int max22516_tx_set(struct max22516_dev *dev, uint8_t low_high);
+
+int max22516_txen_set(struct max22516_dev *dev, uint8_t lvl);
+
+int max22516_set_cq(struct max22516_dev *dev, uint8_t lvl);
+
+int max22516_rx_get(struct max22516_dev *dev);
+
+int max22516_get_cq(struct max22516_dev *dev, uint8_t *cq);
+
+int max22516_get_cq_stat(struct max22516_dev *dev, uint8_t *status3);
+
+int max22516_setup_do_dis(struct max22516_dev *dev);
+
+int max22516_setup_do_pp(struct max22516_dev *dev);
+
+int max22516_setup_do_pnp(struct max22516_dev *dev);
+
+int max22516_setup_do_npn(struct max22516_dev *dev);
+
+int max22516_do_set(struct max22516_dev *dev, uint8_t lvl);
+
+int max22516_do_get(struct max22516_dev *dev, uint8_t *lvl);
+
+int max22516_get_do_stat(struct max22516_dev *dev, uint8_t *status3);
+
+int max22516_set_event(struct max22516_dev *dev, uint8_t ev_qual,
+		       uint16_t ev_code);
+
+int max22516_setup_watchdog(struct max22516_dev *dev, uint8_t wd_timeout,
+			    uint8_t wd_clr, uint8_t wd_event_en,
+			    uint8_t wd_event_flag);
 
 /* MAX22516 Initialization */
 int max22516_init(struct max22516_dev **device,
