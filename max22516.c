@@ -647,9 +647,8 @@ int max22516_get_cq_stat(struct max22516_dev *dev, uint8_t *status3)
 }
 
 /**
- * @brief MAX22516 get cq
+ * @brief MAX22516 setup do dis
  * @param dev - The device structure.
- * @param cq
  * @return Returns 0 in case of success or negative error code otherwise.
  */
 int max22516_setup_do_dis(struct max22516_dev *dev)
@@ -776,7 +775,7 @@ int max22516_get_do_stat(struct max22516_dev *dev, uint8_t *status3)
 /**
  * @brief MAX22516 set event
  * @param dev - The device structure.
- * @param ev_equal
+ * @param ev_qual
  * @param ev_code
  * @return Returns 0 in case of success or negative error code otherwise.
  */

@@ -254,11 +254,11 @@ struct max22516_dev {
 /************************ Functions Declarations ******************************/
 /******************************************************************************/
 
-/** MAX22516 SPI write */
+/* MAX22516 SPI write */
 int max22516_write(struct max22516_dev *dev, uint8_t reg_addr,
 		   uint8_t data);
 
-/** MAX22516 SPI Read */
+/* MAX22516 SPI Read */
 int max22516_read(struct max22516_dev *dev, uint8_t reg_addr,
 		  uint8_t *data);
 
@@ -385,7 +385,7 @@ int max22516_setup_watchdog(struct max22516_dev *dev, uint8_t wd_timeout,
 int max22516_init(struct max22516_dev **device,
 		  struct max22516_init_param *init_param);
 
-/** MAX22516 Resources Deallocation */
+/* MAX22516 Resources Deallocation */
 int max22516_remove(struct max22516_dev *dev);
 
 #endif /* MAX22516_H_ */
