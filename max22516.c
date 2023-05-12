@@ -165,6 +165,11 @@ int max22516_burst_read_register(struct max22516_dev *dev, uint8_t reg_addr,
 	return 0;
 }
 
+/**
+ * @brief MAX22516 build tcyc
+ * @param t
+ * @param tmr
+ */
 void max22516_build_tcyc(int16_t t, uint8_t *tmr)
 {
 	uint8_t temp = 0;
@@ -182,6 +187,11 @@ void max22516_build_tcyc(int16_t t, uint8_t *tmr)
 	*tmr = temp;
 }
 
+/**
+ * @brief MAX22516 rebuild min cyct to microseconds
+ * @param t
+ * @param tmr
+ */
 void max22516_rebuild_min_cyct_to_us(int16_t t, uint8_t *tmr)
 {
 	uint8_t temp = 0;
@@ -197,6 +207,12 @@ void max22516_rebuild_min_cyct_to_us(int16_t t, uint8_t *tmr)
 	*tmr = temp;
 }
 
+/**
+ * @brief MAX22516 set min ctmr
+ * @param dev - The device structure.
+ * @param min_t
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_set_min_ctmr(struct max22516_dev *dev,
 			  uint16_t min_t) //set min cyc time, in 100us
 {
@@ -207,6 +223,14 @@ int max22516_set_min_ctmr(struct max22516_dev *dev,
 	return max22516_write(dev, REG_PG1_MINCYCTM, tmr);
 }
 
+/**
+ * @brief MAX22516 set id
+ * @param dev - The device structure.
+ * @param vid
+ * @param id
+ * @param fid
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_set_id(struct max22516_dev *dev, uint16_t vid, uint32_t id,
 		    uint16_t fid)
 {
@@ -246,6 +270,11 @@ int max22516_set_id(struct max22516_dev *dev, uint16_t vid, uint32_t id,
 			      no_os_field_prep(PG1_FUNCID1_LSB_MSK, fid));
 }
 
+/**
+ * @brief MAX22516 decode tcyc
+ * @param t
+ * @param tmr
+ */
 void max22516_decode_tcyc(uint8_t tmr, int16_t *t)
 {
 	uint8_t base = (tmr >> 6);
@@ -261,6 +290,13 @@ void max22516_decode_tcyc(uint8_t tmr, int16_t *t)
 	*t = temp;
 }
 
+/**
+ * @brief MAX22516 get mst ctmr
+ * @param dev - The device structure.
+ * @param min_t
+ * @param c_tmr
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_get_mst_ctmr(struct max22516_dev *dev, uint16_t min_t,
 			  int16_t *c_tmr)  //get master min cyc time, in 100us
 {
@@ -276,31 +312,65 @@ int max22516_get_mst_ctmr(struct max22516_dev *dev, uint16_t min_t,
 	return 0;
 }
 
+/**
+ * @brief MAX22516 get dl mode
+ * @param dev - The device structure.
+ * @param mode
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_get_dl_mode(struct max22516_dev *dev, uint8_t *mode)
 {
 	return max22516_read(dev, REG_PG1_MSTCYCTM, mode);
 }
 
+/**
+ * @brief MAX22516 get iol err cnt
+ * @param dev - The device structure.
+ * @param cnt
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_get_iol_err_cnt(struct max22516_dev *dev, uint8_t *cnt)
 {
 	return max22516_read(dev, REG_IOL_ERR_CNT, cnt);
 }
 
+/**
+ * @brief MAX22516 get frm err cnt
+ * @param dev - The device structure.
+ * @param cnt
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_get_frm_err_cnt(struct max22516_dev *dev, uint8_t *cnt)
 {
 	return max22516_read(dev, REG_FRM_ERR_CNT, cnt);
 }
 
+/**
+ * @brief MAX22516 clr iol err cnt
+ * @param dev - The device structure.
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_clr_iol_err_cnt(struct max22516_dev *dev)
 {
 	return max22516_write(dev, REG_IOL_ERR_CNT, 0);
 }
 
+/**
+ * @brief MAX22516 clr frm err cnt
+ * @param dev - The device structure.
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_clr_frm_err_cnt(struct max22516_dev *dev)
 {
 	return max22516_write(dev, REG_FRM_ERR_CNT, 0);
 }
 
+/**
+ * @brief MAX22516 set led1
+ * @param dev - The device structure.
+ * @param ltmr
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_set_led1(struct max22516_dev *dev, uint16_t ltmr)
 {
 	int ret;
@@ -314,6 +384,12 @@ int max22516_set_led1(struct max22516_dev *dev, uint16_t ltmr)
 			      no_os_field_prep(REG_LED1_CTRL_LSB_MSK, ltmr));
 }
 
+/**
+ * @brief MAX22516 set led2
+ * @param dev - The device structure.
+ * @param ltmr
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_set_led2(struct max22516_dev *dev, uint16_t ltmr)
 {
 	int ret;
@@ -327,6 +403,12 @@ int max22516_set_led2(struct max22516_dev *dev, uint16_t ltmr)
 			      no_os_field_prep(REG_LED2_CTRL_LSB_MSK, ltmr));
 }
 
+/**
+ * @brief MAX22516 get v24
+ * @param dev - The device structure.
+ * @param status3
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_get_v24(struct max22516_dev *dev, uint8_t *status3)
 {
 	uint8_t temp;
@@ -346,6 +428,12 @@ int max22516_get_v24(struct max22516_dev *dev, uint8_t *status3)
 	return 0;
 }
 
+/**
+ * @brief MAX22516 get THD
+ * @param dev - The device structure.
+ * @param status3
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_get_thd(struct max22516_dev *dev, uint8_t *status3)
 {
 	uint8_t temp;
@@ -365,11 +453,21 @@ int max22516_get_thd(struct max22516_dev *dev, uint8_t *status3)
 	return 0;
 }
 
+/**
+ * @brief MAX22516 setup cq dis
+ * @param dev - The device structure.
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_setup_cq_dis(struct max22516_dev *dev)
 {
 	return max22516_write(dev, REG_CQ_CTRL1, BIT_CQCTRL1_CQ_PD);
 }
 
+/**
+ * @brief MAX22516 setup cq pp
+ * @param dev - The device structure.
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_setup_cq_pp(struct max22516_dev *dev)
 {
 	int ret;
@@ -384,6 +482,11 @@ int max22516_setup_cq_pp(struct max22516_dev *dev)
 			      BIT_CQ_CL_200MA);
 }
 
+/**
+ * @brief MAX22516 setup cq pnp
+ * @param dev - The device structure.
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_setup_cq_pnp(struct max22516_dev *dev)
 {
 	int ret;
@@ -397,6 +500,11 @@ int max22516_setup_cq_pnp(struct max22516_dev *dev)
 			      BIT_CQ_CL_200MA);
 }
 
+/**
+ * @brief MAX22516 setup cq npn
+ * @param dev - The device structure.
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_setup_cq_npn(struct max22516_dev *dev)
 {
 	int ret;
@@ -410,6 +518,12 @@ int max22516_setup_cq_npn(struct max22516_dev *dev)
 			      BIT_CQ_CL_200MA);
 }
 
+/**
+ * @brief MAX22516 tx set
+ * @param dev - The device structure.
+ * @param low_high
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_tx_set(struct max22516_dev *dev, uint8_t low_high)
 {
 	uint8_t tx_ctrl;
@@ -431,6 +545,12 @@ int max22516_tx_set(struct max22516_dev *dev, uint8_t low_high)
 	return max22516_write(dev, REG_TX_CTRL, tx_ctrl);
 }
 
+/**
+ * @brief MAX22516 txen set
+ * @param dev - The device structure.
+ * @param lvl
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_txen_set(struct max22516_dev *dev, uint8_t lvl)
 {
 	uint8_t tx_ctrl;
@@ -452,6 +572,12 @@ int max22516_txen_set(struct max22516_dev *dev, uint8_t lvl)
 	return max22516_write(dev, REG_TX_CTRL, tx_ctrl);
 }
 
+/**
+ * @brief MAX22516 set cq
+ * @param dev - The device structure.
+ * @param lvl
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_set_cq(struct max22516_dev *dev,
 		    uint8_t lvl) // set the level of CQ (0: CQ low, 1: CQ high, 2: CQ highZ)
 {
@@ -471,11 +597,22 @@ int max22516_set_cq(struct max22516_dev *dev,
 		return max22516_tx_set(dev, 0);
 }
 
+/**
+ * @brief MAX22516 rx get
+ * @param dev - The device structure.
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_rx_get(struct max22516_dev *dev)
 {
 	return 0;
 }
 
+/**
+ * @brief MAX22516 get cq
+ * @param dev - The device structure.
+ * @param cq
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_get_cq(struct max22516_dev *dev, uint8_t *cq)
 {
 	if (max22516_rx_get(dev) == 1)
@@ -486,6 +623,12 @@ int max22516_get_cq(struct max22516_dev *dev, uint8_t *cq)
 	return 0;
 };
 
+/**
+ * @brief MAX22516 get cq stat
+ * @param dev - The device structure.
+ * @param status3
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_get_cq_stat(struct max22516_dev *dev, uint8_t *status3)
 {
 	uint8_t temp;
@@ -503,11 +646,22 @@ int max22516_get_cq_stat(struct max22516_dev *dev, uint8_t *status3)
 	return 0;
 }
 
+/**
+ * @brief MAX22516 get cq
+ * @param dev - The device structure.
+ * @param cq
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_setup_do_dis(struct max22516_dev *dev)
 {
 	return max22516_write(dev, REG_DO_CTRL1, BIT_DOCTRL1_DO_PD);
 }
 
+/**
+ * @brief MAX22516 setup do pp
+ * @param dev - The device structure.
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_setup_do_pp(struct max22516_dev *dev)
 {
 	int ret;
@@ -523,6 +677,11 @@ int max22516_setup_do_pp(struct max22516_dev *dev)
 			      BIT_DO_CL_200MA);
 }
 
+/**
+ * @brief MAX22516 setup do pnp
+ * @param dev - The device structure.
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_setup_do_pnp(struct max22516_dev *dev)
 {
 	int ret;
@@ -537,6 +696,11 @@ int max22516_setup_do_pnp(struct max22516_dev *dev)
 			      BIT_DO_CL_200MA);
 }
 
+/**
+ * @brief MAX22516 setup do npn
+ * @param dev - The device structure.
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_setup_do_npn(struct max22516_dev *dev)
 {
 	int ret;
@@ -552,6 +716,12 @@ int max22516_setup_do_npn(struct max22516_dev *dev)
 			      BIT_DO_CL_200MA);
 }
 
+/**
+ * @brief MAX22516 do set
+ * @param dev - The device structure.
+ * @param lvl
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_do_set(struct max22516_dev *dev, uint8_t lvl)
 {
 	uint8_t tx_ctrl;
@@ -569,11 +739,23 @@ int max22516_do_set(struct max22516_dev *dev, uint8_t lvl)
 	return max22516_write(dev, REG_TX_CTRL, tx_ctrl);
 }
 
+/**
+ * @brief MAX22516 do get
+ * @param dev - The device structure.
+ * @param lvl
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_do_get(struct max22516_dev *dev, uint8_t *lvl)
 {
 	return 1;
 }
 
+/**
+ * @brief MAX22516 get do stat
+ * @param dev - The device structure.
+ * @param status3
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_get_do_stat(struct max22516_dev *dev, uint8_t *status3)
 {
 	uint8_t temp;
@@ -591,6 +773,13 @@ int max22516_get_do_stat(struct max22516_dev *dev, uint8_t *status3)
 	return 0;
 }
 
+/**
+ * @brief MAX22516 set event
+ * @param dev - The device structure.
+ * @param ev_equal
+ * @param ev_code
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_set_event(struct max22516_dev *dev, uint8_t ev_qual,
 		       uint16_t ev_code)
 {
@@ -617,6 +806,15 @@ int max22516_set_event(struct max22516_dev *dev, uint8_t ev_qual,
 	return max22516_write(dev, REG_EVENT_FLAG, EVF_EVENT_FLG);
 }
 
+/**
+ * @brief MAX22516 setup watchdog
+ * @param dev - The device structure.
+ * @param wd_timeout
+ * @param wd_clr
+ * @param wd_event_en
+ * @param wd_event_flag
+ * @return Returns 0 in case of success or negative error code otherwise.
+ */
 int max22516_setup_watchdog(struct max22516_dev *dev, uint8_t wd_timeout,
 			    uint8_t wd_clr, uint8_t wd_event_en,
 			    uint8_t wd_event_flag)
