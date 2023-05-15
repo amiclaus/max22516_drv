@@ -177,10 +177,10 @@ void max22516_build_tcyc(int16_t t, uint8_t *tmr)
 	if (t <= 64) { // in 100µs. -> if less than 6.4ms
 		temp = t;
 	} else if (t <= 316) { // in 100µs. -> if less than 31.6ms
-		temp = (t-64) / 4; // offset of 6.4ms and now in 400µs steps
+		temp = (t - 64) / 4; // offset of 6.4ms and now in 400µs steps
 		temp |= 0x40;
 	} else if (t < 1328) { // in 100µs. -> if less than 132.8ms
-		temp = (t-320) / 16; // offset of 32ms and now in 1.6ms steps
+		temp = (t - 320) / 16; // offset of 32ms and now in 1.6ms steps
 		temp |= 0x80;
 	}
 
@@ -490,6 +490,7 @@ int max22516_setup_cq_pp(struct max22516_dev *dev)
 int max22516_setup_cq_pnp(struct max22516_dev *dev)
 {
 	int ret;
+
 	ret = max22516_write(dev, REG_CQ_CTRL1, BIT_CQCTRL1_CQ_EN);
 	if (ret)
 		return ret;
@@ -508,6 +509,7 @@ int max22516_setup_cq_pnp(struct max22516_dev *dev)
 int max22516_setup_cq_npn(struct max22516_dev *dev)
 {
 	int ret;
+
 	ret = max22516_write(dev, REG_CQ_CTRL1, BIT_CQCTRL1_CQ_EN);
 	if (ret)
 		return ret;
@@ -526,23 +528,15 @@ int max22516_setup_cq_npn(struct max22516_dev *dev)
  */
 int max22516_tx_set(struct max22516_dev *dev, uint8_t low_high)
 {
-	uint8_t tx_ctrl;
 	int ret;
 
-	ret = max22516_read(dev, REG_TX_CTRL, &tx_ctrl);
+	ret = max22516_update(dev, REG_TX_CTRL, BIT_TXC_CQTX,
+			      no_os_field_prep(BIT_TXC_CQTX, low_high));
 	if (ret)
 		return ret;
 
-	if (low_high == 0)
-		tx_ctrl &= (~BIT_TXC_CQTX); // set TX to low, keep other bits
-	else
-		tx_ctrl |= BIT_TXC_CQTX; // set TX to high, keep other bits
-
-
-	tx_ctrl |=
-		BIT_TXC_CQDRVSEL;  // Make sure the register-bits are used (rather then pins)
-
-	return max22516_write(dev, REG_TX_CTRL, tx_ctrl);
+	return max22516_update(dev, REG_TX_CTRL, BIT_TXC_CQDRVSEL,
+			       no_os_field_prep(BIT_TXC_CQDRVSEL, 1));
 }
 
 /**
@@ -553,23 +547,15 @@ int max22516_tx_set(struct max22516_dev *dev, uint8_t low_high)
  */
 int max22516_txen_set(struct max22516_dev *dev, uint8_t lvl)
 {
-	uint8_t tx_ctrl;
 	int ret;
 
-	ret = max22516_read(dev, REG_TX_CTRL, &tx_ctrl);
+	ret = max22516_update(dev, REG_TX_CTRL, BIT_TXC_CQTXEN,
+			      no_os_field_prep(BIT_TXC_CQTXEN, lvl));
 	if (ret)
 		return ret;
 
-	if (lvl == 0)
-		tx_ctrl &= (~BIT_TXC_CQTXEN); // set TXEN to low, keep other bits
-	else
-		tx_ctrl |= BIT_TXC_CQTXEN; // set TXEN to high, keep other bits
-
-
-	tx_ctrl |=
-		BIT_TXC_CQDRVSEL;  // Make sure the register-bits are used (rather then pins)
-
-	return max22516_write(dev, REG_TX_CTRL, tx_ctrl);
+	return max22516_update(dev, REG_TX_CTRL, BIT_TXC_CQDRVSEL,
+			       no_os_field_prep(BIT_TXC_CQDRVSEL, 1));
 }
 
 /**
@@ -615,7 +601,14 @@ int max22516_rx_get(struct max22516_dev *dev)
  */
 int max22516_get_cq(struct max22516_dev *dev, uint8_t *cq)
 {
-	if (max22516_rx_get(dev) == 1)
+	uint8_t temp;
+	int ret;
+
+	ret = max22516_tx_get(dev, &temp);
+	if (ret)
+		return ret;
+
+	if (temp == 1)
 		*cq = 0;
 	else
 		*cq = 1;
@@ -638,10 +631,7 @@ int max22516_get_cq_stat(struct max22516_dev *dev, uint8_t *status3)
 	if (ret)
 		return ret;
 
-	if (temp & DEV_STAT2_SET_CQFAULT)
-		*status3 = 1;
-	else
-		*status3 = 0;
+	*status3 = no_os_field_get(DEV_STAT2_SET_CQFAULT, temp);
 
 	return 0;
 }
@@ -723,19 +713,8 @@ int max22516_setup_do_npn(struct max22516_dev *dev)
  */
 int max22516_do_set(struct max22516_dev *dev, uint8_t lvl)
 {
-	uint8_t tx_ctrl;
-	int ret;
-
-	ret = max22516_read(dev, REG_TX_CTRL, &tx_ctrl);
-	if (ret)
-		return ret;
-
-	if (lvl == 0)
-		tx_ctrl &= (~BIT_TXC_DOTX); // set TX to low, keep other bits
-	else
-		tx_ctrl |= BIT_TXC_DOTX; // set TX to high, keep other bits
-
-	return max22516_write(dev, REG_TX_CTRL, tx_ctrl);
+	return max22516_update(dev, REG_TX_CTRL, BIT_TXC_DOTX,
+			       no_os_field_prep(BIT_TXC_DOTX, lvl));
 }
 
 /**
@@ -746,7 +725,16 @@ int max22516_do_set(struct max22516_dev *dev, uint8_t lvl)
  */
 int max22516_do_get(struct max22516_dev *dev, uint8_t *lvl)
 {
-	return 1;
+	uint8_t tx_ctrl;
+	int ret;
+
+	ret = max22516_read(dev, REG_TX_CTRL, &tx_ctrl);
+	if (ret)
+		return ret;
+
+	*lvl = no_os_field_get(BIT_TXC_DOTX, tx_ctrl);
+
+	return 0;
 }
 
 /**
@@ -764,10 +752,7 @@ int max22516_get_do_stat(struct max22516_dev *dev, uint8_t *status3)
 	if (ret)
 		return ret;
 
-	if (temp & DEV_STAT2_SET_DOFAULT)
-		*status3 = 1;
-	else
-		*status3 = 0;
+	*status3 = no_os_field_get(DEV_STAT2_SET_DOFAULT, temp);
 
 	return 0;
 }
@@ -821,11 +806,7 @@ int max22516_setup_watchdog(struct max22516_dev *dev, uint8_t wd_timeout,
 	int ret;
 	uint8_t event_flag;
 
-	if (wd_clr == 0)
-		ret = max22516_write(dev, REG_WDGCLR, wd_clr);
-	if (wd_clr == 1)
-		ret = max22516_write(dev, REG_WDGCLR, wd_clr);
-
+	ret = max22516_write(dev, REG_WDGCLR, wd_clr);
 	if (ret)
 		return ret;
 
