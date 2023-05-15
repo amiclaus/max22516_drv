@@ -584,12 +584,22 @@ int max22516_set_cq(struct max22516_dev *dev,
 }
 
 /**
- * @brief MAX22516 rx get
+ * @brief MAX22516 tx get
  * @param dev - The device structure.
+ * @param low_high - TX level
  * @return Returns 0 in case of success or negative error code otherwise.
  */
-int max22516_rx_get(struct max22516_dev *dev)
+int max22516_tx_get(struct max22516_dev *dev, uint8_t *low_high)
 {
+	uint8_t temp;
+	int ret;
+
+	ret = max22516_read(dev, REG_TX_CTRL, &temp);
+	if (ret)
+		return ret;
+
+	*low_high = no_os_field_get(BIT_TXC_CQTX, temp);
+
 	return 0;
 }
 

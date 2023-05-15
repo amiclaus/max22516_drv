@@ -342,8 +342,8 @@ int max22516_txen_set(struct max22516_dev *dev, uint8_t lvl);
 /* MAX22516 set cq */
 int max22516_set_cq(struct max22516_dev *dev, uint8_t lvl);
 
-/* MAX22516 rx get */
-int max22516_rx_get(struct max22516_dev *dev);
+/* MAX22516 tx get */
+int max22516_tx_get(struct max22516_dev *dev, uint8_t *low_high);
 
 /* MAX22516 get cq */
 int max22516_get_cq(struct max22516_dev *dev, uint8_t *cq);
