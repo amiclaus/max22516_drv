@@ -225,7 +225,7 @@
 
 /* MAX22516 Extra Definitions */
 #define MAX22516_SPI_DUMMY_DATA		0x00
-#define MAX22516_BUFF_SIZE_BYTES     	2
+#define MAX22516_BUFF_SIZE_BYTES     	64
 #define MAX22516_SPI_READ_CMD		NO_OS_BIT(7)
 
 /******************************************************************************/
@@ -248,6 +248,8 @@ struct max22516_init_param {
 struct max22516_dev {
 	/* SPI Initialization parameters */
 	struct no_os_spi_desc	*spi_desc;
+	/** Buffer used for communication with MAX22516 */
+	uint8_t comm_buff[MAX22516_BUFF_SIZE_BYTES];
 };
 
 /******************************************************************************/

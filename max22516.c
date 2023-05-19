@@ -59,13 +59,10 @@
  */
 int max22516_write(struct max22516_dev *dev, uint8_t reg_addr, uint8_t data)
 {
-	uint8_t buff[MAX22516_BUFF_SIZE_BYTES];
+	dev->comm_buff[0] = reg_addr;
+	dev->comm_buff[1] = data;
 
-	buff[0] = reg_addr;
-	buff[1] = data;
-
-	return no_os_spi_write_and_read(dev->spi_desc, buff,
-					MAX22516_BUFF_SIZE_BYTES);
+	return no_os_spi_write_and_read(dev->spi_desc, dev->comm_buff, 2);
 }
 
 /**
@@ -78,17 +75,15 @@ int max22516_write(struct max22516_dev *dev, uint8_t reg_addr, uint8_t data)
 int max22516_read(struct max22516_dev *dev, uint8_t reg_addr, uint8_t *data)
 {
 	int ret;
-	uint8_t buff[MAX22516_BUFF_SIZE_BYTES];
 
-	buff[0] = MAX22516_SPI_READ_CMD | reg_addr;
-	buff[1] = MAX22516_SPI_DUMMY_DATA;
+	dev->comm_buff[0] = MAX22516_SPI_READ_CMD | reg_addr;
+	dev->comm_buff[1] = MAX22516_SPI_DUMMY_DATA;
 
-	ret = no_os_spi_write_and_read(dev->spi_desc, buff,
-				       MAX22516_BUFF_SIZE_BYTES);
+	ret = no_os_spi_write_and_read(dev->spi_desc, dev->comm_buff, 2);
 	if (ret)
 		return ret;
 
-	*data = buff[1];
+	*data = dev->comm_buff[1];
 
 	return ret;
 }
@@ -128,15 +123,14 @@ int max22516_update(struct max22516_dev *dev, uint8_t reg_addr, uint8_t mask,
 int max22516_burst_write_register(struct max22516_dev *dev, uint8_t reg_addr,
 				  uint8_t count, uint8_t *data)
 {
-	uint8_t buff[count+1];
 	int i;
 
-	buff[0] = reg_addr;
+	dev->comm_buff[0] = reg_addr;
 
 	for (i = 0; i < count; i++)
-		buff[1 + i] = data[0 + i];
+		dev->comm_buff[1 + i] = data[0 + i];
 
-	return no_os_spi_write_and_read(dev->spi_desc, buff, count + 1);
+	return no_os_spi_write_and_read(dev->spi_desc, dev->comm_buff, count + 1);
 }
 
 /**
@@ -150,17 +144,16 @@ int max22516_burst_write_register(struct max22516_dev *dev, uint8_t reg_addr,
 int max22516_burst_read_register(struct max22516_dev *dev, uint8_t reg_addr,
 				 uint8_t count, uint8_t *data)
 {
-	uint8_t buff[count+1];
 	int i, ret;
 
-	buff[0] = MAX22516_SPI_READ_CMD | reg_addr;
+	dev->comm_buff[0] = MAX22516_SPI_READ_CMD | reg_addr;
 
-	ret = no_os_spi_write_and_read(dev->spi_desc, buff, count + 1);
+	ret = no_os_spi_write_and_read(dev->spi_desc, dev->comm_buff, count + 1);
 	if (ret)
 		return ret;
 
 	for (i = 0; i < count; i++)
-		data[0 + i] = buff[1 + i];
+		data[0 + i] = dev->comm_buff[1 + i];
 
 	return 0;
 }
